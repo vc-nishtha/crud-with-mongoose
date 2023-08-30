@@ -1,12 +1,18 @@
 const User = require("../model/user.schema");
+const userValidator = require("../validator/user-joi.validator");
 
 exports.addUser = async function addUser(req, res) {
     try {
-        const user = new User(req.body);
-        await user.save();
-        res.status(200).send({
-            message: "User add successfully!",
-        });
+        const { error, value } = await userValidator.validateUser(req.body);
+        if (error) {
+            res.send({ error: error.details, status: 400, message: error.details.map((x) => x.message).join(", ") });
+        } else {
+            const user = new User(req.body);
+            await user.save();
+            res.status(200).send({
+                message: "User add successfully!",
+            });
+        }
     } catch (error) {
         res.status(400).send({
             message: "Bad Request",
