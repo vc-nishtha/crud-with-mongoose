@@ -5,7 +5,7 @@ const nameMessages = {
     "string.empty": "Name is required",
     "string.min": "Name must be at least {#limit} characters",
     "string.max": "Name must not exceed {#limit} characters",
-    "any.required": "Name is required",
+    "any.required": "Name is not valid",
 };
 
 const emailMessages = {
@@ -48,7 +48,7 @@ const departmentMessages = {
 };
 
 const userSchema = Joi.object({
-    name: Joi.string().min(3).max(10).required().messages(nameMessages),
+    name: Joi.string().required().messages(nameMessages),
     email: Joi.string().email().required().messages(emailMessages),
     age: Joi.number().min(18).max(100).required().messages(ageMessages),
     phone: Joi.string().min(6).max(12).required().messages(phoneMessages),
